@@ -1,5 +1,5 @@
 # Binaries
-tracehub
+/tracehub
 *.exe
 *.exe~
 *.dll
