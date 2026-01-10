@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 )
 
 const (

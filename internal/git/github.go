@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/google/go-github/v57/github"
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 )
 
 // GitHubClient handles GitHub API operations

@@ -8,8 +8,8 @@ import (
 
 	"github.com/anthropics/anthropic-sdk-go"
 	"github.com/anthropics/anthropic-sdk-go/option"
-	"github.com/tapiaw38/tracehub/internal/config"
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/internal/config"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 )
 
 // Client is a client for interacting with Claude AI

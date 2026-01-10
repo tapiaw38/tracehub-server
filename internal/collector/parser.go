@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 	"github.com/tidwall/gjson"
 )
 

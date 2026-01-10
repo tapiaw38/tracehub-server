@@ -6,11 +6,11 @@ import (
 
 	"github.com/charmbracelet/bubbles/viewport"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/tapiaw38/tracehub/internal/ai"
-	"github.com/tapiaw38/tracehub/internal/collector"
-	"github.com/tapiaw38/tracehub/internal/config"
-	"github.com/tapiaw38/tracehub/internal/detector"
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/internal/ai"
+	"github.com/tapiaw38/tracehub-server/internal/collector"
+	"github.com/tapiaw38/tracehub-server/internal/config"
+	"github.com/tapiaw38/tracehub-server/internal/detector"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 )
 
 // ViewMode represents the current view mode

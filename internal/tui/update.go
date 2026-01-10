@@ -5,8 +5,8 @@ import (
 	"time"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/tapiaw38/tracehub/internal/ai"
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/internal/ai"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 )
 
 // Update handles messages and updates the model

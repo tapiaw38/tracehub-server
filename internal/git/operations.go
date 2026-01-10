@@ -12,8 +12,8 @@ import (
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
-	"github.com/tapiaw38/tracehub/internal/config"
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/internal/config"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 )
 
 // GitOps handles Git operations

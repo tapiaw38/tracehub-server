@@ -4,7 +4,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 )
 
 // ErrorPattern represents a pattern for detecting errors

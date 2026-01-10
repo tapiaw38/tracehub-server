@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/nxadm/tail"
-	"github.com/tapiaw38/tracehub/pkg/models"
+	"github.com/tapiaw38/tracehub-server/pkg/models"
 )
 
 // LogReader reads logs from a file in real-time
