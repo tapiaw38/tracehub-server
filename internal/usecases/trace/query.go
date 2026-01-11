@@ -65,8 +65,13 @@ func (uc *QueryUsecase) Execute(ctx context.Context, input QueryInput) (*QueryOu
 		return nil, err
 	}
 
+	total, err := uc.traceRepo.Count(ctx, filter)
+	if err != nil {
+		return nil, err
+	}
+
 	return &QueryOutput{
 		Traces: traces,
-		Total:  len(traces),
+		Total:  total,
 	}, nil
 }

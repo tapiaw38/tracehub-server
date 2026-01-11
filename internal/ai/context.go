@@ -44,7 +44,7 @@ func (cb *ContextBuilder) BuildContext(err *models.DetectedError) (string, error
 	}
 
 	// Extract relevant snippet around the error line
-	snippet := cb.extractSnippet(content, err.LineNumber)
+	snippet := cb.extractSnippet(content, err.LineNumber, err.FilePath)
 	return snippet, nil
 }
 
@@ -71,7 +71,7 @@ func (cb *ContextBuilder) readFile(path string) (string, error) {
 }
 
 // extractSnippet extracts relevant code snippet around the error line
-func (cb *ContextBuilder) extractSnippet(content string, lineNumber int) string {
+func (cb *ContextBuilder) extractSnippet(content string, lineNumber int, filePath string) string {
 	lines := strings.Split(content, "\n")
 
 	// If line number is 0 or invalid, return first 50 lines
@@ -80,7 +80,7 @@ func (cb *ContextBuilder) extractSnippet(content string, lineNumber int) string 
 		if len(lines) < end {
 			end = len(lines)
 		}
-		return cb.formatSnippet(lines[0:end], 1)
+		return cb.formatSnippet(lines[0:end], 1, filePath)
 	}
 
 	// Extract 20 lines before and after the error line
@@ -96,13 +96,67 @@ func (cb *ContextBuilder) extractSnippet(content string, lineNumber int) string 
 	}
 
 	snippet := lines[start:end]
-	return cb.formatSnippet(snippet, start+1)
+	return cb.formatSnippet(snippet, start+1, filePath)
+}
+
+// detectLanguage detects the programming language from file extension
+func detectLanguage(filePath string) string {
+	ext := filepath.Ext(filePath)
+	switch strings.ToLower(ext) {
+	case ".go":
+		return "go"
+	case ".js", ".jsx", ".mjs", ".cjs":
+		return "javascript"
+	case ".ts", ".tsx":
+		return "typescript"
+	case ".py", ".pyw", ".pyi":
+		return "python"
+	case ".java":
+		return "java"
+	case ".rb":
+		return "ruby"
+	case ".php":
+		return "php"
+	case ".rs":
+		return "rust"
+	case ".cpp", ".cc", ".cxx", ".c++":
+		return "cpp"
+	case ".c":
+		return "c"
+	case ".cs":
+		return "csharp"
+	case ".swift":
+		return "swift"
+	case ".kt":
+		return "kotlin"
+	case ".scala":
+		return "scala"
+	case ".sh", ".bash":
+		return "bash"
+	case ".yaml", ".yml":
+		return "yaml"
+	case ".json":
+		return "json"
+	case ".xml":
+		return "xml"
+	case ".html", ".htm":
+		return "html"
+	case ".css":
+		return "css"
+	case ".sql":
+		return "sql"
+	case ".md":
+		return "markdown"
+	default:
+		return "text"
+	}
 }
 
 // formatSnippet formats a code snippet with line numbers
-func (cb *ContextBuilder) formatSnippet(lines []string, startLine int) string {
+func (cb *ContextBuilder) formatSnippet(lines []string, startLine int, filePath string) string {
+	language := detectLanguage(filePath)
 	var formatted strings.Builder
-	formatted.WriteString("```go\n")
+	formatted.WriteString(fmt.Sprintf("```%s\n", language))
 	for i, line := range lines {
 		formatted.WriteString(fmt.Sprintf("%4d | %s\n", startLine+i, line))
 	}

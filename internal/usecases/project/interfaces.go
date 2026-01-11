@@ -11,6 +11,7 @@ type ProjectRepository interface {
 	GetByID(ctx context.Context, id string) (*domain.Project, error)
 	GetByName(ctx context.Context, name string) (*domain.Project, error)
 	List(ctx context.Context, limit, offset int) ([]*domain.Project, error)
+	Count(ctx context.Context) (int, error)
 	Update(ctx context.Context, project *domain.Project) error
 	Delete(ctx context.Context, id string) error
 }

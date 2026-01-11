@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/go-git/go-git/v5"
-	"github.com/go-git/go-git/v5/config"
+	gitconfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/tapiaw38/tracehub-server/internal/config"
@@ -18,9 +18,9 @@ import (
 
 // GitOps handles Git operations
 type GitOps struct {
-	repoPath string
-	repo     *git.Repository
-	config   *config.GitConfig
+	repoPath  string
+	repo      *git.Repository
+	gitConfig *config.GitConfig
 }
 
 // NewGitOps creates a new GitOps instance
@@ -31,16 +31,16 @@ func NewGitOps(repoPath string, cfg *config.GitConfig) (*GitOps, error) {
 	}
 
 	return &GitOps{
-		repoPath: repoPath,
-		repo:     repo,
-		config:   cfg,
+		repoPath:  repoPath,
+		repo:      repo,
+		gitConfig: cfg,
 	}, nil
 }
 
 // CreateFixBranch creates a new branch for the fix
 func (g *GitOps) CreateFixBranch(errorID string) (string, error) {
 	// Generate branch name
-	branchName := fmt.Sprintf("%s%s-%d", g.config.BranchPrefix, errorID, time.Now().Unix())
+	branchName := fmt.Sprintf("%s%s-%d", g.gitConfig.BranchPrefix, errorID, time.Now().Unix())
 
 	// Get the current HEAD
 	head, err := g.repo.Head()
@@ -114,7 +114,7 @@ func (g *GitOps) Commit(proposal *models.FixProposal) error {
 
 	// Create commit message
 	commitMsg := fmt.Sprintf("%s Fix %s in %s\n\n%s\n\nRoot cause: %s",
-		g.config.CommitPrefix,
+		g.gitConfig.CommitPrefix,
 		proposal.ErrorID,
 		proposal.ServiceName,
 		proposal.Fix.Changes,
@@ -149,9 +149,9 @@ func (g *GitOps) Push(branchName string) error {
 	}
 
 	// Push to remote
-	refSpec := config.RefSpec(fmt.Sprintf("refs/heads/%s:refs/heads/%s", branchName, branchName))
+	refSpec := gitconfig.RefSpec(fmt.Sprintf("refs/heads/%s:refs/heads/%s", branchName, branchName))
 	err = remote.Push(&git.PushOptions{
-		RefSpecs: []config.RefSpec{refSpec},
+		RefSpecs: []gitconfig.RefSpec{refSpec},
 	})
 	if err != nil {
 		return fmt.Errorf("failed to push: %w", err)

@@ -15,6 +15,7 @@ type Repository interface {
 	GetByID(ctx context.Context, id string) (*domain.Project, error)
 	GetByName(ctx context.Context, name string) (*domain.Project, error)
 	List(ctx context.Context, limit, offset int) ([]*domain.Project, error)
+	Count(ctx context.Context) (int, error)
 	Update(ctx context.Context, project *domain.Project) error
 	Delete(ctx context.Context, id string) error
 }
@@ -169,6 +170,18 @@ func (r *repository) List(ctx context.Context, limit, offset int) ([]*domain.Pro
 	}
 
 	return projects, nil
+}
+
+func (r *repository) Count(ctx context.Context) (int, error) {
+	query := `SELECT COUNT(*) FROM projects`
+
+	var count int
+	err := r.db.QueryRowContext(ctx, query).Scan(&count)
+	if err != nil {
+		return 0, fmt.Errorf("failed to count projects: %w", err)
+	}
+
+	return count, nil
 }
 
 func (r *repository) Update(ctx context.Context, project *domain.Project) error {

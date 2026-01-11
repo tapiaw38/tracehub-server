@@ -29,8 +29,13 @@ func (uc *ListUsecase) Execute(ctx context.Context, limit, offset int) (*ListOut
 		return nil, err
 	}
 
+	total, err := uc.repo.Count(ctx)
+	if err != nil {
+		return nil, err
+	}
+
 	return &ListOutput{
 		Projects: projects,
-		Total:    len(projects),
+		Total:    total,
 	}, nil
 }

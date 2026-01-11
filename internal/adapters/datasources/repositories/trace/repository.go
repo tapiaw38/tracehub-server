@@ -257,10 +257,41 @@ func (r *repository) Query(ctx context.Context, filter domain.TraceFilter) ([]*d
 func (r *repository) Count(ctx context.Context, filter domain.TraceFilter) (int, error) {
 	query := `SELECT COUNT(*) FROM traces WHERE project_id = $1`
 	args := []interface{}{filter.ProjectID}
+	argPos := 2
 
 	if !filter.Since.IsZero() {
-		query += " AND timestamp >= $2"
+		query += fmt.Sprintf(" AND timestamp >= $%d", argPos)
 		args = append(args, filter.Since)
+		argPos++
+	}
+
+	if !filter.Until.IsZero() {
+		query += fmt.Sprintf(" AND timestamp <= $%d", argPos)
+		args = append(args, filter.Until)
+		argPos++
+	}
+
+	if len(filter.Level) > 0 {
+		query += fmt.Sprintf(" AND level = ANY($%d)", argPos)
+		args = append(args, filter.Level)
+		argPos++
+	}
+
+	if filter.ServiceName != "" {
+		query += fmt.Sprintf(" AND service_name = $%d", argPos)
+		args = append(args, filter.ServiceName)
+		argPos++
+	}
+
+	if filter.Environment != "" {
+		query += fmt.Sprintf(" AND environment = $%d", argPos)
+		args = append(args, filter.Environment)
+		argPos++
+	}
+
+	if filter.SearchText != "" {
+		query += fmt.Sprintf(" AND message ILIKE $%d", argPos)
+		args = append(args, "%"+filter.SearchText+"%")
 	}
 
 	var count int
