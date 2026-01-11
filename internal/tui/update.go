@@ -38,7 +38,7 @@ func (m *Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// Update service status
 		for _, svc := range m.services {
 			if svc.Name == err.ServiceName {
-				svc.Status = "error"
+				svc.Status = models.ServiceStatusError
 				svc.LastError = err
 				svc.Metrics.TotalErrors++
 			}
@@ -244,11 +244,11 @@ func (m *Model) updateMetrics() {
 
 		// Update service status based on error rate
 		if svc.Metrics.ErrorRate > 5.0 {
-			svc.Status = "error"
+			svc.Status = models.ServiceStatusError
 		} else if svc.Metrics.ErrorRate > 1.0 {
-			svc.Status = "warning"
+			svc.Status = models.ServiceStatusWarn
 		} else {
-			svc.Status = "running"
+			svc.Status = models.ServiceStatusRunning
 		}
 
 		svc.LastUpdated = time.Now()

@@ -76,9 +76,10 @@ type Metrics struct {
 type ServiceStatus string
 
 const (
-	ServiceStatusOK    ServiceStatus = "ok"
-	ServiceStatusError ServiceStatus = "error"
-	ServiceStatusWarn  ServiceStatus = "warn"
+	ServiceStatusOK      ServiceStatus = "ok"
+	ServiceStatusError   ServiceStatus = "error"
+	ServiceStatusWarn    ServiceStatus = "warn"
+	ServiceStatusRunning ServiceStatus = "running"
 )
 
 type Service struct {
@@ -102,6 +103,7 @@ func NewService(name, logPath, format, repoPath string) *Service {
 		Metrics: &Metrics{
 			TotalRequests: 0,
 			TotalErrors:   0,
+			RequestRate:   0.0,
 			ErrorRate:     0.0,
 			LastUpdate:    time.Now().Format("15:04:05"),
 		},
